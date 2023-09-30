@@ -33,6 +33,8 @@ void main(List<String> arguments) async {
   var email = Platform.environment['EMAIL_KEY'];
   var passwd = Platform.environment['PASSWD_KEY'];
   var serverKey = Platform.environment['SERVER_KEY'];
+  var enableTrafficTransform = Platform.environment['ENABLE_TRAFFIC_TRANSFORM'];
+
 
   if (email != null &&
       passwd != null &&
@@ -41,7 +43,7 @@ void main(List<String> arguments) async {
     var token = await login(email, passwd);
     var checkinResult = await checkin(token);
     var message = checkinResult.result;
-    if (checkinResult.ret == 1) {
+    if (checkinResult.ret == 1 && enableTrafficTransform == '1') {
       TransformResult transformResult = await trafficTransform(1024, token);
       message += '\n${transformResult.msg}';
     }
