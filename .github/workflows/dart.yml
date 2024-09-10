@@ -10,7 +10,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '0 10 * * *'
 
 jobs:
   dukou_checkin:
@@ -28,7 +28,6 @@ jobs:
           EMAIL_KEY: ${{ secrets.EMAIL_KEY }}
           PASSWD_KEY: ${{ secrets.PASSWD_KEY }}
           SERVER_KEY: ${{ secrets.SERVER_KEY }}
-          ENABLE_TRAFFIC_TRANSFORM: ${{ secrets.ENABLE_TRAFFIC_TRANSFORM }}
         run: |
           dart pub get
           dart bin/dukou_chekin.dart

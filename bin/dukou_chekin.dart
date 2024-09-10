@@ -33,8 +33,6 @@ void main(List<String> arguments) async {
   var email = Platform.environment['EMAIL_KEY'];
   var passwd = Platform.environment['PASSWD_KEY'];
   var serverKey = Platform.environment['SERVER_KEY'];
-  var enableTrafficTransform = Platform.environment['ENABLE_TRAFFIC_TRANSFORM'];
-
 
   if (email != null &&
       passwd != null &&
@@ -43,7 +41,7 @@ void main(List<String> arguments) async {
     var token = await login(email, passwd);
     var checkinResult = await checkin(token);
     var message = checkinResult.result;
-    if (checkinResult.ret == 1 && enableTrafficTransform == '1') {
+    if (checkinResult.ret == 1) {
       TransformResult transformResult = await trafficTransform(1024, token);
       message += '\n${transformResult.msg}';
     }
@@ -55,7 +53,7 @@ void main(List<String> arguments) async {
 
 Future<String> login(String email, String passwd) async {
   var response = await Dio().post(
-    'https://dukouapi.com/api/token',
+    'https://flzt.top/api/token',
     data: {
       'email': email,
       'passwd': passwd,
@@ -70,14 +68,14 @@ Future<CheckinResult> checkin(String token) async {
     headers: {
       'access-token': token,
     },
-  )).get('https://dukouapi.com/api/user/checkin');
+  )).get('https://flzt.top/api/user/checkin');
   print(response.data);
   return CheckinResult.fromJson(json.decode(response.data));
 }
 
 Future<TransformResult> trafficTransform(int num, String token) async {
   var response = await Dio(BaseOptions(headers: {'access-token': token})).get(
-    'https://dukou.dev/api/user/koukanntraffic',
+    'https://flzt.top/api/user/koukanntraffic',
     queryParameters: {'traffic': num},
   );
   print(response.data);
